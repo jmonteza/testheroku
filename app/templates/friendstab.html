@@ -1,0 +1,45 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/following.css' %}">{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid d-flex align-items-center flex-column mb-3">
+
+    {% for person in friends %}
+    <div class="p-2 d-flex flex-column mb-3 flex-fill" style="max-width: 700px;">
+        <div class="p-2">
+            <div class="card flex-fill" style="width: 700px;">
+                <div class="d-flex">
+                    <img src="{{person.profileImage}}" width="230px" height="230px"
+                        class="object-fit-cover border rounded-start" alt="No profile image available">
+                    <div class="d-flex flex-fill flex-column ">
+                        <div class="card-body">
+                            <h5 class="card-title">{{person.displayName}}</h5>
+                            <p class="card-subtitle mb-2 text-muted">@{{person.username}}</p>
+
+                            <div class="btn-group" role="group" aria-label="Basic example">
+
+                                <a type="button" class="btn btn-primary"
+                                    href="{% url 'profile' author_id=person.id %}"><i
+                                        class="bi bi-person-fill">&nbsp;Profile</i></a>
+                                <a type="button" href="{{person.github}}" target="_blank" class="btn btn-secondary"><i
+                                        class="bi bi-github">&nbsp;GitHub</i></a>
+                            </div>
+                        </div>
+                        <div class="card-footer"><a href="{{person.host}}"
+                                class="text-decoration-none">{{person.host|cut:'http://'}}</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "base_generic.html" %}
+
+{% block title %} 
+{% if user.username == author.username %}
+<title>Profile</title> 
+{% else %}
+<title>{{author.displayName}}</title>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+</style>
+<div class="d-flex justify-content-center">
+    <div class="p-2 d-flex flex-column mb-3 flex-fill" style="max-width: 1000px;">
+        <div class="p-2">
+            <div class="card mb-3 flex-fill" style="max-width: 1000px;">
+                <div class="d-flex justify-content-start flex-fill">
+                    <img src={{author.profileImage}} width="250px" height="250px"
+                        class="object-fit-cover border rounded-start" alt="profile picture">
+                    <div class="p-2 flex-fill">
+                        <div class="card-body">
+                            <div class="d-flex flex-md-row justify-content-between">
+                                <div class="">
+                                    <h1 class="card-title">{{author.displayName}}</h1>
+                                </div>
+                                <div class="p-2">
+                                    {% if user.username != author.username %}
+                                    <form class="mt-3" action="{% url 'profile' author_id=author.id %}" method="post">
+                                        {% csrf_token %}
+                                    {% if user_is_following == "True" %}
+                                    <button type="submit" name="unfollow" value="{{author.id}}"
+                                        class="btn btn-outline-primary btn-lg">
+                                        <i class="bi bi-person-fill-add">&nbsp;Unfollow</i></button>
+                                    {% else %}
+                                    <button type="submit" name="follow" value="{{author.id}}"
+                                        class="btn btn-primary btn-lg">
+                                        <i class="bi bi-person-fill-add">&nbsp;Request to Follow</i></button>
+                                    {% endif %}
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div>
+                                <a type="button" class="btn btn-secondary" href="{{person.github}}" target="_blank"><i
+                                        class="bi bi-github">&nbsp;GitHub</i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="max-width: 1000px;">
+                        <nav>
+                            <div class="nav nav-tabs justify-content-center border-bottom-0" id="nav-tab" role="tablist">
+                                <button class="nav-link {% if active_tab == 'posts' %} active{% endif %}"
+                                    id="nav-public-posts-tab" data-bs-toggle="tab" href="#"
+                                    data-bs-target="#nav-public-posts" type="button" role="tab"
+                                    aria-controls="nav-public-posts" aria-selected="true">Public Posts</button>
+                                <button class="nav-link {% if active_tab == 'followers' %} active{% endif %}"
+                                    id="nav-followers-tab" data-bs-toggle="tab" href="#" data-bs-target="#nav-followers"
+                                    type="button" role="tab" aria-controls="nav-followers"
+                                    aria-selected="false">{{followers|length}} Follower{{followers|pluralize}}</button>
+                                <button class="nav-link {% if active_tab == 'following' %} active{% endif %}"
+                                    id="nav-following-tab" data-bs-toggle="tab" data-bs-target="#nav-following"
+                                    type="button" role="tab" href="#" aria-controls="nav-following"
+                                    aria-selected="false">{{following|length}} Following</button>
+                                <button class="nav-link {% if active_tab == 'friends' %} active{% endif %}"
+                                    id="nav-friends-tab" data-bs-toggle="tab" data-bs-target="#nav-friends"
+                                    type="button" role="tab" href="#" aria-controls="nav-friends"
+                                    aria-selected="false">{{friends|length}} True Friend{{friends|pluralize}}</button>
+                            </div>
+                        </nav>
+                    <div class="card p-2">
+
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade  {% if active_tab == 'posts' %} show active{% endif %}"
+                                id="nav-public-posts" role="tabpanel" aria-labelledby="nav-public-posts-tab"
+                                tabindex="0">
+                                {% include 'posts_tab.html' %}
+                            </div>
+                            <div class="tab-pane fade {% if active_tab == 'following' %} show active{% endif %}"
+                                id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab" tabindex="1">
+                                {% include 'followerstab.html' %}
+                            </div>
+                            <div class="tab-pane fade {% if active_tab == 'followers' %} show active{% endif %}"
+                                id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab" tabindex="2">
+                                {% include 'followingtab.html' %}
+                            </div>
+                            <div class="tab-pane fade {% if active_tab == 'friends' %} show active{% endif %}"
+                                id="nav-friends" role="tabpanel" aria-labelledby="nav-friends-tab" tabindex="3">
+                                {% include 'friendstab.html' %}
+                            </div>
+                        </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

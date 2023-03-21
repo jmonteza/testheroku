@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <div class="card container-fluid p-0 my-3">
+    <div class="card-body">
+      <div class="media">
+        <div class="d-flex flex-row align-items-center">
+          <div class="m-2">
+            <a class="d-flex" href="{% url 'profile' author_id=item.from_author.username|convert_username_to_id %}">
+              {% if item.from_author.profileImage %}
+              <img src="{{item.from_author.profileImage}}" class="user-avatar-circle rounded-circle my-1" alt=""></img>
+              {% else %}
+              <i class="bi bi-person text-muted" style="font-size: 40px; text-align: center;" alt=""></i>
+              {% endif %}
+            </a>
+          </div>
+          <div class="m-2">
+            <h4>
+              <a class="text-muted" href="{% url 'profile' author_id=item.from_author.username|convert_username_to_id %}" style="text-decoration: none; color:grey;">
+                {{item.from_author.displayName}}
+              </a>
+              {% if item.object.type == "post" %}
+              <span style="color:grey;">posted</span>
+              <a class="card-title" href="{% url 'post_detail' post_id=item.object.content_object.uuid %}" style="text-decoration: none;">{{item.object.content_object.title}}</a>
+              {% elif item.object.type == "comment" %}
+              <span style="color:grey;">commented on</span>
+              <a class="card-title" href="{% url 'post_detail' post_id=item.object.content_object.uuid %}" style="text-decoration: none;">"{{item.object.content_object.title}}".</a>
+              {% elif item.object.type == "like" %}
+                {% if item.object.content_object|classname == "Post" %}
+                  <span style="color:grey;">liked</span>
+                  <a class="card-title" href="{% url 'post_detail' post_id=item.object.content_object.uuid %}" style="text-decoration: none;">"{{item.object.content_object.title}}".</a>
+                {% elif item.object.content_object|classname == "Comment" %}
+                  <span style="color:grey;">liked your comment on</span>
+                  <a class="card-title" href="{% url 'post_detail' post_id=item.object.content_object.post.uuid %}" style="text-decoration: none;">"{{item.object.content_object.post.title}}".</a>
+                {% endif %}
+              {% elif item.object.type == "follow" %}
+                {% if user.username|convert_username_to_id|isRequest:item.object.content_object.id %}
+                <span style="color:grey;">wants to follow you</span>
+                <form class="mt-3" action="{% url 'requests' author_id=item.object.content_object.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" name="action" value="accept_{{item.object.content_object.username}}_inbox" data-username="{{item.object.content_object.username}}" class="btn btn-success"><i class="bi bi-check">&nbsp;Accept</i></button>
+                  <button type="submit" name="action" value="decline_{{item.object.content_object.username}}_inbox" data-username="{{item.object.content_object.username}}" class="btn btn-danger"><i class="bi bi-x">&nbsp;Decline</i></button>
+                </form>
+                {% else %}
+                  {% if user.username|convert_username_to_id|isFollowing:item.object.content_object.id %}
+                  <span style="color:grey;">wants to follow you: Accepted</span>
+                  {% else %}
+                  <span style="color:grey;">wants to follow you: Declined</span>
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            </h4>
+          </div>
+        </div>
+        <span class="text-muted m-2" style="text-decoration: none;">
+          {{item.date}}
+        </span>
+      </div>
+    </div>
+  </div>
+</html>

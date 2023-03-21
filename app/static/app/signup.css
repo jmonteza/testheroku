@@ -1,0 +1,56 @@
+#sign-up-text {
+    text-align: center;
+}
+.sign-up-form-container{
+    display:flex;
+    justify-content: center;
+    margin-top: 1.5em;
+}
+
+.form-internal{
+    display:flex;
+    flex-direction: column;
+    width: 23em;
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 1em;
+}
+
+.small-signup-btn {
+    display: inline-block;
+    width: 4em;
+    height: 1.25em;
+    background: #0057FB;
+    padding: 10px;
+    text-align: center;
+    border-radius: 1em;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1em;
+    cursor: pointer;
+}
+
+.form-internal label{
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.form-internal input:focus{
+    outline: none !important;
+    border: 2px solid #3b7fff;
+}
+
+.form-internal input::placeholder{
+    font-size: 20px;
+}
+
+.form-internal input{
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    padding-left: 0.5em;
+    margin-bottom: 1.25em;
+    border-radius: 5px;
+    font-size: 1.6em;
+}

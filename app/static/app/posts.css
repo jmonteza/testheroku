@@ -1,0 +1,74 @@
+/*
+Some of the css in this file is based off of the following UNDER MIT License:
+Title: Bootstrap snippet. bs4 simple social network post
+Author: Bootdey.com
+Link: https://www.bootdey.com/snippets/view/bs4-simple-social-network-post
+Date Accessed: Feb 15, 2023
+Link: https://www.bootdey.com/snippets/view/bs4-s
+*/
+
+body {
+  background:#eee;
+}
+.posts-content{
+  margin-top:20px;
+}
+
+.default-style .ui-bordered {
+  border: 1px solid rgba(24,28,33,0.06);
+}
+.ui-bg-cover {
+  background-color: transparent;
+  background-position: center center;
+  background-size: cover;
+}
+.ui-rect {
+  padding-top: 50% !important;
+}
+.ui-rect, .ui-rect-30, .ui-rect-60, .ui-rect-67, .ui-rect-75 {
+  position: relative !important;
+  display: block !important;
+  padding-top: 100% !important;
+  width: 100% !important;
+}
+.d-flex, .d-inline-flex, .media, .media>:not(.media-body), .jumbotron, .card {
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+}
+.bg-dark {
+  background-color: rgba(24,28,33,0.9) !important;
+}
+.card-footer, .card hr {
+  border-color: rgba(24,28,33,0.06);
+}
+.ui-rect-content {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+}
+.default-style .ui-bordered {
+  border: 1px solid rgba(24,28,33,0.06);
+}
+
+.user-avatar-circle{
+  object-fit: scale-down; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  width: 100%;
+  max-height: 40px;
+  min-height: 40px;
+  max-width: 40px;
+  min-width: 40px;
+
+}
+
+.likes-reply {
+  font-size: 110%;
+}
+
+.like-button {
+  padding: 0;
+  border: none;
+  background: none;
+}

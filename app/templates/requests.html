@@ -1,0 +1,98 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+{% if mode == "received" %}
+<title>Follow Requests</title>
+{% else %}
+<title>Sent Requests</title>
+{% endif %}
+
+
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/following.css' %}">{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid d-flex align-items-center flex-column p-3">
+    {% if mode == "received" %}
+    <h1>{{requests|length}} Follow Request{{requests|pluralize}}</h1>
+    {% else %}
+    <h1>{{requests|length}} Sent Request{{requests|pluralize}}</h1>
+    {% endif %}
+
+    {% for request in requests %}
+
+    <div class="p-2 d-flex flex-column mb-3 flex-fill" style="max-width: 700px;">
+        <div class="p-2">
+            <div class="card flex-fill" style="width: 700px;">
+                <div class="d-flex">
+                    <img src="{{request.profileImage}}" width="230px" height="230px"
+                        class="object-fit-cover border rounded-start" alt="No profile image available">
+                    <div class="d-flex flex-fill flex-column ">
+                        <div class="card-body">
+                            <h5 class="card-title">{{request.displayName}}</h5>
+                            <p class="card-subtitle mb-2 text-muted">@{{request.username}}</p>
+
+                            <div class="btn-group" role="group" aria-label="Basic example">
+
+                                <a type="button" class="btn btn-primary"
+                                    href="{% url 'profile' author_id=request.id %}"><i
+                                        class="bi bi-person-fill">&nbsp;Profile</i></a>
+                                <a type="button" href="{{request.github}}" target="_blank" class="btn btn-secondary"><i
+                                        class="bi bi-github">&nbsp;GitHub</i></a>
+                            </div>
+                            {% if mode == "received" %}
+                            <form class="mt-3"
+                                action="{% url 'requests' author_id=request.username|convert_username_to_id %}"
+                                method="post">
+                                {% csrf_token %}
+
+                                <button type="submit" name="action" value="accept_{{request.username}}"
+                                    data-username="{{request.username}}" class="btn btn-success"><i
+                                        class="bi bi-check">&nbsp;Accept</i></button>
+
+                                <button type="submit" name="action" value="decline_{{request.username}}"
+                                    data-username="{{request.username}}" class="btn btn-danger"><i
+                                        class="bi bi-x">&nbsp;Decline</i></button>
+
+                            </form>
+                            {% else %}
+
+
+                            <form class="mt-3"
+                                action="{% url 'sent_requests' author_id=request.username|convert_username_to_id %}"
+                                method="post">
+                                {% csrf_token %}
+
+                                <button type="submit" name="action" value="cancel_{{request.username}}"
+                                    data-username="{{request.username}}" class="btn btn-warning"><i
+                                        class="bi bi-arrow-counterclockwise">&nbsp;Cancel Request</i></button>
+                            </form>
+
+
+
+                            {% endif %}
+
+
+                        </div>
+
+                        <div class="card-footer"><a href="{{request.host}}"
+                                class="text-decoration-none">{{request.host|cut:'http://'}}</a></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

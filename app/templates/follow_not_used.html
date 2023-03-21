@@ -1,0 +1,81 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+{% if mode == "following" %}
+<title>{{author.displayName}}'s Followings</title>
+{% else %}
+<title>{{author.displayName}}'s Followers</title>
+{% endif %}
+
+{% endblock %}
+
+{% load static %}
+
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static 'app/following.css' %}">{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid d-flex align-items-center flex-column p-3">
+        {% if mode == "following" %}
+      <h1>{{follow|length}} Following{{follow|pluralize}}</h1>
+        {% else %}
+        <h1>{{follow|length}} Follower{{follow|pluralize}}</h1>
+      {% endif %}
+
+{% for person in follow %}
+
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{person.profileImage}}" class="img-fluid" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{person.displayName}}</h5>
+        <p class="card-subtitle mb-2 text-muted">@{{person.username}}</p>
+        <p class="card-text">Just coding...</p>    
+
+<div class="btn-group" role="group" aria-label="Basic example">
+
+    <a type="button" class="btn btn-primary" href="{% url 'profile' author_id=person.username|convert_username_to_id %}" target="_blank"><i class="bi bi-person-fill">&nbsp;Profile</i></a>
+        <a type="button" href="{{person.github}}" target="_blank" class="btn btn-secondary"><i class="bi bi-github">&nbsp;GitHub</i></a>
+
+</div>
+
+        {% if user.username == author.username %}
+
+         
+          <form class="mt-3" action="{% url mode username=user.username %}" method="post">
+        {% csrf_token %}
+
+          {% if mode == "following" %}
+       
+     
+           <button type="submit" name="unfollow" value="{{person.username}}" class="btn btn-danger"><i class="bi bi-person-x">&nbsp;Unfollow</i></button>
+        
+
+
+          {% else %}
+            <button type="submit" name="remove" value="{{person.username}}" class="btn btn-danger"><i class="bi bi-x-circle-fill">&nbsp;Remove</i></button>
+          {% endif %}
+
+           </form>
+          
+
+        {% endif %}
+
+      </div>
+
+        <div class="card-footer"><a href="{{person.host}}" class="text-decoration-none">{{person.host|cut:'http://'}}</a></div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endfor %}
+
+</div>
+
+
+{% endblock %}

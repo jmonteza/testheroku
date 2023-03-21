@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>{{post.title}}</title>
+{% endblock %}
+
+{% load static %}
+
+
+{% block content %}
+<script>
+  $(document).ready(function() {
+    $("#collapse_{{post.uuid}}").show()
+  })
+</script>
+<div class="container-fluid d-flex align-items-center flex-column p-3">
+
+  {% include "post_card.html" %}
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>Authors</title>
+
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/following.css' %}">{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid d-flex align-items-center flex-column mb-3">
+  <h1>{{authors|length}} Author{{authors|pluralize}}</h1>
+
+
+  {% for author in authors %}
+
+  <div class="p-2 d-flex flex-column mb-3 flex-fill" style="max-width: 1000px;">
+    <div class="p-2">
+      <div class="card flex-fill" style="width: 1000px;">
+        <div class="d-flex">
+          <img src="{{author.profileImage}}" width="230px" height="230px" class="object-fit-cover border rounded-start"
+            alt="No profile image available">
+          <div class="d-flex flex-fill flex-column ">
+            <div class="card-body">
+              <h5 class="card-title">{{author.displayName}}</h5>
+              <p class="card-subtitle mb-2 text-muted">@{{author.username}}</p>
+
+              <div class="btn-group" role="group" aria-label="Basic example">
+
+                <a type="button" class="btn btn-primary" href="{% url 'profile' author_id=author.id %}"><i
+                    class="bi bi-person-fill">&nbsp;Profile</i></a>
+                <a type="button" href="{{author.github}}" target="_blank" class="btn btn-secondary"><i
+                    class="bi bi-github">&nbsp;GitHub</i></a>
+
+
+              </div>
+
+              {% if author not in ineligible_users %}
+
+              <form class="mt-3" action="{% url 'authors' %}" method="post">
+                {% csrf_token %}
+
+                <button type="submit" name="follow" value="{{author.id}}" class="btn btn-success"><i
+                    class="bi bi-person-fill-add">&nbsp;Send a follow request</i></button>
+
+              </form>
+
+              {% endif %}
+
+
+            </div>
+            <div class="card-footer"><a href="{{author.host}}"
+                class="text-decoration-none">{{author.host|cut:'http://'}}</a></div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+</div>
+
+
+{% endblock %}

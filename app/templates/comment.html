@@ -1,0 +1,74 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <script>
+    $(document).ready(function() {
+      $("#like-comment-{{comment.uuid}}").click(function(e) {
+          e.preventDefault();
+
+          $.ajax({
+              type: 'POST',
+              url: '{% url "add_like_comment" post_id=post.uuid comment_id=comment.uuid %}',
+              data: {
+                  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                  action: 'add_like_comment'
+              },
+              success: function (result) {
+                showAndDismissAlert("info",result)
+                if(result == "Liked"){
+                  let value = parseInt($("#like-count-{{comment.uuid}}").html());
+                  value++;
+                  $("#like-count-{{comment.uuid}}").html(value);
+                }
+              },
+              error: function (xhr, exception) {
+                let error_message = '';
+                if (xhr.status === 0) {
+                  error_message = 'No connection to server. Check Network.';
+                } else if (xhr.status == 404) {
+                  error_message = 'Requested page not found. [404]';
+                } else if (xhr.status == 500) {
+                  error_message = 'Internal Server Error [500].';
+                } else if (exception === 'timeout') {
+                  error_message = 'Timed out. Try again.';
+                } else if (exception === 'abort') {
+                  error_message = 'Request aborted.';
+                } else {
+                  error_message = 'Could not make request. ' + xhr.responseText;
+                }
+                showAndDismissAlert("error",error_message)
+              }
+          });
+      }
+      )
+    })
+  </script>
+  <div class="card">
+    <div class="card-header">
+      <a class="d-inline-flex align-middle" href="{% url 'profile' author_id=comment.author.id %}">
+        {% if comment.author.profileImage %}
+        <img src="{{comment.author.profileImage}}" class="user-avatar-circle rounded-circle my-1" alt=""></img>
+        {% else %}
+        <i class="bi bi-person text-muted" style="font-size: 40px; text-align: center;" alt=""></i>
+        {% endif %}
+      </a>
+      <a class="d-inline-flex ms-3 text-muted" href="{% url 'profile' author_id=comment.author.id %}" style="text-decoration: none;">
+        {{comment.author.displayName}}
+      </a>
+      <button id="like-comment-{{comment.uuid}}" class="d-inline-flex text-muted like-button" style="text-decoration: none;">
+        <i class="bi bi-heart mx-1" ></i>
+        <strong id="like-count-{{comment.uuid}}">{{comment.likes.all|length}}</strong>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="px-4 comment-body">
+        <p>
+          <a class="card-body" style="text-decoration: none;">
+            {{comment.comment}}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</html>

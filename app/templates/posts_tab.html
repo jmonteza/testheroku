@@ -1,0 +1,18 @@
+{% block title %}
+
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid d-flex align-items-center flex-column p-3">
+
+{% for post in posts %}
+
+{% include "post_card.html" %}
+<!--visibility: {{post.visibility}}-->
+{% endfor %}
+
+</div>
+
+{% endblock %}

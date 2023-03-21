@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Sign in</title>
+      <link rel="stylesheet" type="text/css" href="{% static 'app/signup.css' %}">
+   </head>
+   <body>
+      <div class="sign-up-form-container">
+         <form method="POST" action="login">
+            <h1 id="sign-up-text">Sign in</h1>
+            <div class="form-internal">
+               {% csrf_token %}
+               {{ form }}
+               <!-- <a class='small-signup-btn'>Sign up</a> -->
+               <input type="submit" value="Submit">
+
+                <a href="/signup">Create an account</a>
+               {% if messages %}
+               <ul class="messages">
+                  {% for message in messages %}
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  {% endfor %}
+               </ul>
+               {% endif %}
+            </div>
+         </form>
+      </div>
+   </body>
+</html>
+<!-- <label for="display-name">Display Name</label>
+   <input id="display-name" placeholder='Enter your display name'></input>
+   <label for="profile-pic-url">Profile Picture URL</label>
+   <input id="profile-pic-url" placeholder='Enter URL for profile picture'></input>
+   <label for="github-url">Github URL</label>
+   <input id="github-url" placeholder='Enter your URL for github'></input>
+   <label for="password">Password</label>
+   <input type="password" id="password" placeholder='Enter your password'></input>
+   <label for="confirm_pass">Confirm Password</label>
+   <input type="password" id="confirm_pass" placeholder='Confirm your password'></input> -->

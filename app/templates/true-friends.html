@@ -1,0 +1,55 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>{{author.displayName}}'s True Friends</title>
+
+{% endblock %}
+
+{% load static %}
+
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static 'app/following.css' %}">{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid d-flex align-items-center flex-column p-3">
+      <h1>{{friends|length}} True Friend{{friends|pluralize}}</h1>
+   
+
+{% for friend in friends %}
+
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{friend.profileImage}}" class="img-fluid" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{friend.displayName}}</h5>
+        <p class="card-subtitle mb-2 text-muted">@{{friend.username}}</p>
+        <p class="card-text">Just coding...</p>    
+
+<div class="btn-group" role="group" aria-label="Basic example">
+
+    <a type="button" class="btn btn-primary" href="{% url 'profile' author_id=friend.username|convert_username_to_id %}" target="_blank"><i class="bi bi-person-fill">&nbsp;Profile</i></a>
+        <a type="button" href="{{friend.github}}" target="_blank" class="btn btn-secondary"><i class="bi bi-github">&nbsp;GitHub</i></a>
+
+           
+</div>
+
+
+      </div>
+
+   <div class="card-footer"><a href="{{friend.host}}" class="text-decoration-none">{{friend.host|cut:'http://'}}</a></div>
+
+
+    </div>
+  </div>
+</div>
+
+
+{% endfor %}
+
+</div>
+
+
+{% endblock %}

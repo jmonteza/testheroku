@@ -1,0 +1,97 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>My Inbox</title>
+
+{% endblock %}
+
+{% load static %}
+
+
+{% block content %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/inbox.css' %}">{% endblock %}
+
+<div class="container-fluid d-flex align-items-center flex-column flex-fill position-relative" style="width: 1000px;">
+    <form class="position-absolute top-0 end-0 mt-3" action="{% url 'inbox' author_id=user.username|convert_username_to_id %}" method="post">
+  {% csrf_token %}
+    <button type="submit" name="action" value="clear_inbox" data-username="{{user.username}}" class="btn btn-danger ms-auto"><i
+        class="bi bi-trash3">&nbsp;Clear</i></button>
+  </form>
+  <nav>
+
+    <div class="nav nav-tabs pt-4 border-bottom-0" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-all-tab" data-bs-toggle="tab" href="#" data-bs-target="#nav-all"
+        type="button" role="tab" aria-controls="nav-all" aria-selected="true">All</button>
+      <button class="nav-link" id="nav-posts-tab" data-bs-toggle="tab" href="#" data-bs-target="#nav-posts"
+        type="button" role="tab" aria-controls="nav-posts" aria-selected="false">Posts</button>
+      <button class="nav-link" id="nav-requests-tab" data-bs-toggle="tab" href="#" data-bs-target="#nav-requests"
+        type="button" role="tab" aria-controls="nav-requests" aria-selected="false">Requests</button>
+      <button class="nav-link" id="nav-likes-tab" data-bs-toggle="tab" data-bs-target="#nav-likes" type="button"
+        role="tab" href="#" aria-controls="nav-likes" aria-selected="false">Likes</button>
+      <button class="nav-link" id="nav-comments-tab" data-bs-toggle="tab" data-bs-target="#nav-comments" type="button"
+        role="tab" href="#" aria-controls="nav-comments" aria-selected="false">Comments</button>
+      
+    
+    </div>
+  </nav>
+  <div class="card p-2 d-flex flex-fill" style="width: 1000px;">
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active"
+          id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab"
+          tabindex="0">
+          {% if items %}
+          {% for item in items %}
+          {% include "notification_card.html" %}
+          {% endfor %}
+          {% else %}
+          <div style="text-align:center;">Nothing in your inbox</div>
+          {% endif %}
+      </div>
+      <div class="tab-pane fade"
+          id="nav-posts" role="tabpanel" aria-labelledby="nav-posts-tab" tabindex="1">
+          {% if posts %}
+          {% for item in posts %}
+          {% include "notification_card.html" %}
+          {% endfor %}
+          {% else %}
+          <div style="text-align:center;">No posts in your inbox</div>
+          {% endif %}
+      </div>
+      <div class="tab-pane fade"
+          id="nav-requests" role="tabpanel" aria-labelledby="nav-requests-tab" tabindex="2">
+          <div class="d-flex align-items-center"></div>
+          {% if requests %}
+          {% for item in requests %}
+          {% include "notification_card.html" %}
+          {% endfor %}
+          {% else %}
+          <div style="text-align:center;">No follow requests in your inbox</div>
+          {% endif %}
+      </div>
+      <div class="tab-pane fade"
+          id="nav-likes" role="tabpanel" aria-labelledby="nav-likes-tab" tabindex="3">
+          {% if likes %}
+          {% for item in likes %}
+          {% include "notification_card.html" %}
+          {% endfor %}
+          {% else %}
+          <div style="text-align:center;">No likes in your inbox</div>
+          {% endif %}
+      </div>
+      <div class="tab-pane fade"
+          id="nav-comments" role="tabpanel" aria-labelledby="nav-comments-tab" tabindex="4">
+          {% if comments %}
+          {% for item in comments %}
+          {% include "notification_card.html" %}
+          {% endfor %}
+          {% else %}
+          <div style="text-align:center;">No comments in your inbox</div>
+          {% endif %}
+      </div>
+  </div>
+  </div>
+</div>
+
+
+{% endblock %}

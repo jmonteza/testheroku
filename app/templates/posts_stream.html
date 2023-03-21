@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>Public Posts</title>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid d-flex align-items-center flex-column p-3" style="max-width: 1000px;">
+
+{% for post in posts %}
+
+{% include "post_card.html" %}
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
